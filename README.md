@@ -12,14 +12,35 @@ Multi Person PoseEstimation By PyTorch
 ## Require
 1. [Pytorch](http://pytorch.org/)
 
-## Installation
-1. git submodule init && git submodule update
+## Installation Prerequisite
+```
+git submodule init && git submodule update
+```
+```
+pip install -r requirements.txt
+```
+```
+sudo apt-get install nvidia-modprobe
+```
+```
+sudo apt install swig
+```
 
 ## Demo
 - Download [converted pytorch model](https://www.dropbox.com/s/ae071mfm2qoyc8v/pose_model.pth?dl=0).
-- Compile the C++ postprocessing: `cd lib/pafprocess; sh make.sh` 
-- `python demo/picture_demo.py` to run the picture demo.
-- `python demo/web_demo.py` to run the web demo.
+- Compile the C++ postprocessing: 
+```
+cd lib/pafprocess
+sh make.sh
+```
+- To run the picture demo.
+```
+python demo/picture_demo.py
+```
+- To run the web demo.
+```
+python demo/web_demo.py
+```
 
 ## Evalute
 - `python evaluate/evaluation.py` to evaluate the model on coco val2017 dataset.
@@ -36,7 +57,8 @@ Download link:
 
 ## Development environment
 
-The code is developed using python 3.6 on Ubuntu 18.04. NVIDIA GPUs are needed. The code is developed and tested using 4 1080ti GPU cards. Other platforms or GPU cards are not fully tested.  
+The code is tested using python 3.6 on Ubuntu 20.04, PyTorch 1.10.1, Cuda 10.2, Torchvision 0.11.2 .
+
 
 ## Quick start
 

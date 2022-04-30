@@ -6,3 +6,5 @@ matplotlib
 scipy
 pycocotools
 yacs
+opencv-python
+pandas
