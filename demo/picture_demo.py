@@ -48,6 +48,9 @@ model = torch.nn.DataParallel(model).cuda()
 model.float()
 model.eval()
 
+
+start_time = time.time()
+
 test_image = './readme/ski.jpg'
 oriImg = cv2.imread(test_image) # B,G,R order
 shape_dst = np.min(oriImg.shape[0:2])
@@ -61,5 +64,8 @@ print(im_scale)
 humans = paf_to_pose_cpp(heatmap, paf, cfg)
         
 out = draw_humans(oriImg, humans)
-cv2.imwrite('result.png',out)   
+cv2.imwrite('result.png',out) 
+
+print("Inference time : --- %s seconds ---" % (time.time() - start_time))
+print("FPS : --- %s  ---" % ( 1 /(time.time() - start_time)))
 

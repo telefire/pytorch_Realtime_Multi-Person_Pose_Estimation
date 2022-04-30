@@ -12,7 +12,16 @@ Multi Person PoseEstimation By PyTorch
 ## Require
 1. [Pytorch](http://pytorch.org/)
 
+## Development Environment
+
+The code is tested using python 3.6 on Ubuntu 20.04, PyTorch 1.10.1, Cuda 10.2, Torchvision 0.11.2 .
+
 ## Installation Prerequisite
+
+```
+git clone https://github.com/telefire/pytorch_Realtime_Multi-Person_Pose_Estimation.git
+```
+
 ```
 git submodule init && git submodule update
 ```
@@ -54,10 +63,6 @@ c
 
 Download link:
 [rtpose](https://www.dropbox.com/s/ae071mfm2qoyc8v/pose_model.pth?dl=0)
-
-## Development environment
-
-The code is tested using python 3.6 on Ubuntu 20.04, PyTorch 1.10.1, Cuda 10.2, Torchvision 0.11.2 .
 
 
 ## Quick start
