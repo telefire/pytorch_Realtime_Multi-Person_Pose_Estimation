@@ -1,5 +1,8 @@
-import unittest
+import os
+import re
+import sys
 import torch
+sys.path.append('.')
 from collections import OrderedDict
 from evaluate.coco_eval import run_eval
 from lib.network.rtpose_vgg import get_model, use_vgg
@@ -9,7 +12,9 @@ from torch import load
 #Notice, if you using the 
 with torch.autograd.no_grad():
     # this path is with respect to the root of the project
-    weight_name = '/data/rtpose/rtpose_lr001/1/_ckpt_epoch_82.ckpt'
+
+    '''
+    weight_name = 'pose_model.pth'
     state_dict = torch.load(weight_name)['state_dict']
     
     new_state_dict = OrderedDict()
@@ -24,10 +29,18 @@ with torch.autograd.no_grad():
     model.eval()
     model.float()
     model = model.cuda()
+    '''
     
+    model = get_model('vgg19')     
+    model.load_state_dict(torch.load("pose_model.pth"))
+    model.cuda()
+    model.float()
+    model.eval()
+
+
     # The choice of image preprocessing include: 'rtpose', 'inception', 'vgg' and 'ssd'.
     # If you use the converted model from caffe, it is 'rtpose' preprocess, the model trained in 
     # this repo used 'vgg' preprocess
-    run_eval(image_dir= '/data/coco/images/val2017', anno_file = '/data/coco/annotations/person_keypoints_val2017.json', vis_dir = '/data/coco/images/vis_val2017', model=model, preprocess='vgg')
+    run_eval(image_dir= '~/Downloads/val2017', anno_file = 'person_keypoints_val2017.json', vis_dir = '~/Downloads/vis_val2017', model=model, preprocess='vgg')
 
 

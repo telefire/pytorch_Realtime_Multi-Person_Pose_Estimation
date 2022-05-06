@@ -1,6 +1,9 @@
+import os
+import re
+import sys
+sys.path.append('.')
 import argparse
 import time
-import os
 import numpy as np
 from collections import OrderedDict
 
@@ -12,12 +15,12 @@ from lib.network.rtpose_vgg import get_model, use_vgg
 from lib.datasets import coco, transforms, datasets
 from lib.config import update_config
 
-DATA_DIR = '/data/coco'
+DATA_DIR = 'train/dataset/COCO'
 
-ANNOTATIONS_TRAIN = [os.path.join(DATA_DIR, 'annotations', item) for item in ['person_keypoints_train2017.json']]
-ANNOTATIONS_VAL = os.path.join(DATA_DIR, 'annotations', 'person_keypoints_val2017.json')
-IMAGE_DIR_TRAIN = os.path.join(DATA_DIR, 'images/train2017')
-IMAGE_DIR_VAL = os.path.join(DATA_DIR, 'images/val2017')
+ANNOTATIONS_TRAIN = ANNOTATIONS_VAL = [os.path.join(DATA_DIR, 'annotations', item) for item in ['person_keypoints_train2014.json']]
+ANNOTATIONS_VAL = os.path.join(DATA_DIR, 'annotations', 'person_keypoints_val2014.json')
+IMAGE_DIR_TRAIN = os.path.join(DATA_DIR, 'images','train2014')
+IMAGE_DIR_VAL = os.path.join(DATA_DIR, 'images','val2014')
 
 
 def train_cli(parser):

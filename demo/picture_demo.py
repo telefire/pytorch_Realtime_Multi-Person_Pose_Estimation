@@ -59,13 +59,17 @@ shape_dst = np.min(oriImg.shape[0:2])
 
 with torch.no_grad():
     paf, heatmap, im_scale = get_outputs(oriImg, model,  'rtpose')
-          
+  
+print("Inference time : --- %s seconds ---" % (time.time() - start_time))
+
+post_time = time.time()
+
 print(im_scale)
 humans = paf_to_pose_cpp(heatmap, paf, cfg)
         
 out = draw_humans(oriImg, humans)
 cv2.imwrite('result.png',out) 
 
-print("Inference time : --- %s seconds ---" % (time.time() - start_time))
+print("Post processing time : --- %s seconds ---" % (time.time() - post_time))
 print("FPS : --- %s  ---" % ( 1 /(time.time() - start_time)))
 
