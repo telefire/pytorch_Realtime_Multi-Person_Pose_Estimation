@@ -31,8 +31,17 @@ with torch.autograd.no_grad():
     model = model.cuda()
     '''
     
-    model = get_model('vgg19')     
-    model.load_state_dict(torch.load("pose_model.pth"))
+    model = get_model('mobilenet')     
+
+    raw_weight = torch.load("mobilenet_best_pose.pth")
+    w = {}
+
+    for k in raw_weight.keys():
+        w[k[7:]] = raw_weight[k]
+
+
+    #model.load_state_dict(torch.load("pose_model.pth"))
+    model.load_state_dict(w)
     model.cuda()
     model.float()
     model.eval()
@@ -41,6 +50,6 @@ with torch.autograd.no_grad():
     # The choice of image preprocessing include: 'rtpose', 'inception', 'vgg' and 'ssd'.
     # If you use the converted model from caffe, it is 'rtpose' preprocess, the model trained in 
     # this repo used 'vgg' preprocess
-    run_eval(image_dir= '~/Downloads/val2017', anno_file = 'person_keypoints_val2017.json', vis_dir = '~/Downloads/vis_val2017', model=model, preprocess='vgg')
+    run_eval(image_dir= 'train/dataset/COCO/images/val2017', anno_file = 'train/dataset/COCO/annotations/person_keypoints_val2017.json', vis_dir = 'vis_val2017', model=model, preprocess='vgg')
 
 

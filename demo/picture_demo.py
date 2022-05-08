@@ -31,6 +31,8 @@ parser.add_argument('--cfg', help='experiment configure file name',
                     default='./experiments/vgg19_368x368_sgd.yaml', type=str)
 parser.add_argument('--weight', type=str,
                     default='pose_model.pth')
+parser.add_argument('--trunk', help="other options: mobilenet", type=str,
+                    default='vgg19')
 parser.add_argument('opts',
                     help="Modify config options using the command-line",
                     default=None,
@@ -42,8 +44,16 @@ update_config(cfg, args)
 
 
 
-model = get_model('vgg19')     
-model.load_state_dict(torch.load(args.weight))
+model = get_model(args.trunk) 
+
+raw_weight = torch.load(args.weight)
+
+w = {}
+
+for k in raw_weight.keys():
+    w[k[7:]] = raw_weight[k]
+
+model.load_state_dict(w)
 model = torch.nn.DataParallel(model).cuda()
 model.float()
 model.eval()

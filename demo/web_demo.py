@@ -2,6 +2,9 @@ import os
 import re
 import sys
 sys.path.append('.')
+
+print("phase -1")
+
 import cv2
 import math
 import time
@@ -25,23 +28,38 @@ from evaluate.coco_eval import get_outputs, handle_paf_and_heat
 from lib.utils.common import Human, BodyPart, CocoPart, CocoColors, CocoPairsRender, draw_humans
 from lib.utils.paf_to_pose import paf_to_pose_cpp
 
+print("phase 0")
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--cfg', help='experiment configure file name',
                     default='./experiments/vgg19_368x368_sgd.yaml', type=str)
 parser.add_argument('--weight', type=str,
                     default='pose_model.pth')
+parser.add_argument('--trunk', help="other options: mobilenet", type=str,
+                    default='vgg19')
 parser.add_argument('opts',
                     help="Modify config options using the command-line",
                     default=None,
                     nargs=argparse.REMAINDER)
+
+print("phase 1")
 args = parser.parse_args()
 
 # update config file
 update_config(cfg, args)   
 
-model = get_model('vgg19')     
-model.load_state_dict(torch.load(args.weight))
+print(args.trunk)
+
+model = get_model(args.trunk) 
+
+raw_weight = torch.load(args.weight)
+
+w = {}
+
+for k in raw_weight.keys():
+    w[k[7:]] = raw_weight[k]
+
+model.load_state_dict(w)
 model.cuda()
 model.float()
 model.eval()
