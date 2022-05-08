@@ -15,8 +15,8 @@ try:
 except ImportError:
     pass
 
-from network import slim
-from network.slim import g_name
+import slim
+from slim import g_name
 
 
 class BasicBlock(nn.Module):

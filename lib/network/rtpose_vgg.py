@@ -10,6 +10,22 @@ import torch.utils.model_zoo as model_zoo
 from torch.autograd import Variable
 from torch.nn import init
 
+
+def conv_bn(inp, oup, stride):
+    return nn.Sequential(nn.Conv2d(inp, oup, 3, stride, 1, bias=False),
+                         nn.BatchNorm2d(oup),
+                         nn.ReLU(inplace=True))
+
+
+def conv_dw(inp, oup, stride):
+    return nn.Sequential(nn.Conv2d(inp, inp, 3, stride, 1, groups=inp,
+                                   bias=False),
+                         nn.BatchNorm2d(inp),
+                         nn.ReLU(inplace=True),
+                         nn.Conv2d(inp, oup, 1, 1, 0, bias=False),
+                         nn.BatchNorm2d(oup), nn.ReLU(inplace=True))
+
+
 def make_stages(cfg_dict):
     """Builds CPM stages from a dictionary
     Args:
@@ -55,6 +71,21 @@ def make_vgg19_block(block):
                 layers += [conv2d, nn.ReLU(inplace=True)]
     return nn.Sequential(*layers)
 
+def make_mobilenet_block(block):
+    layers = []
+    for i in range(len(block)):
+        one_ = block[i]
+        for k, v in one_.items():
+            if 'bn' in k:
+                layers += [conv_bn(inp=v[0], oup=v[1], stride=v[2])]
+            elif 'dw' in k:
+                layers += [conv_dw(inp=v[0], oup=v[1], stride=v[2])]
+            else:
+                conv2d = nn.Conv2d(in_channels=v[0], out_channels=v[1],
+                                   kernel_size=v[3], stride=v[2],
+                                   padding=v[4])
+                layers += [conv2d, nn.ReLU(inplace=True)]
+    return nn.Sequential(*layers)
 
 
 def get_model(trunk='vgg19'):
@@ -131,6 +162,9 @@ def get_model(trunk='vgg19'):
     if trunk == 'vgg19':
         print("Bulding VGG19")
         models['block0'] = make_vgg19_block(block0)
+    elif trunk == 'mobilenet':
+        print("Building mobilenet")
+        models['block0'] = make_mobilenet_block(block0)
 
     for k, v in blocks.items():
         models[k] = make_stages(list(v))

@@ -70,7 +70,7 @@ Download link:
 ### 1. Preparation
 
 #### 1.1 Prepare the dataset
-- `cd training; bash getData.sh` to obtain the COCO 2017 images in `/data/root/coco/images/`, keypoints annotations in `/data/root/coco/annotations/`,
+- `cd training; bash getData_coco2017.sh` to obtain the COCO 2017 images in `/data/root/coco/images/`, keypoints annotations in `/data/root/coco/annotations/`,
 make them look like this:
 ```
 ${DATA_ROOT}
