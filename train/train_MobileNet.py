@@ -11,7 +11,7 @@ import torch
 import torch.nn as nn
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 
-from lib.network.rtpose_vgg import get_model, use_vgg
+from lib.network.rtpose_vgg import get_model
 from lib.datasets import coco, transforms, datasets
 from lib.config import update_config
 
@@ -299,10 +299,7 @@ class AverageMeter(object):
 
 # model
 model = get_model(trunk='mobilenet')
-model = torch.nn.DataParallel(model).cuda()
-# load pretrained
-#use_vgg(model)
-
+model = torch.nn.DataParallel(model, device_ids = [0]).cuda()
 
 
 trainable_vars = [param for param in model.parameters() if param.requires_grad]

@@ -299,7 +299,7 @@ class AverageMeter(object):
 
 # model
 model = get_model(trunk='vgg19')
-model = torch.nn.DataParallel(model).cuda()
+model = torch.nn.DataParallel(model, device_ids = [0]).cuda()
 # load pretrained
 use_vgg(model)
 
