@@ -127,7 +127,7 @@ class InvertedResidual(nn.Module):
 def get_model():
 
     class MobileNetV2(nn.Module):
-        def __init__(self, model_dict, n_class=1000, input_size=224, width_mult=1.):
+        def __init__(self, model_dict, n_class=1000, input_size=368, width_mult=1.):
             super(MobileNetV2, self).__init__()
             block = InvertedResidual
             input_channel = 32
@@ -144,7 +144,7 @@ def get_model():
             ]
 
             # building first layer
-            assert input_size % 32 == 0
+            #assert input_size % 32 == 0
             input_channel = int(input_channel * width_mult)
             self.last_channel = int(last_channel * width_mult) if width_mult > 1.0 else last_channel
             self.features = [conv_bn(3, input_channel, 2)]
@@ -227,11 +227,6 @@ def get_model():
 
             return (out6_1, out6_2), saved_for_loss
 
-            '''
-            x = x.mean(3).mean(2)
-            x = self.classifier(x)
-            return x
-            '''
 
         def _initialize_weights(self):
             for m in self.modules():

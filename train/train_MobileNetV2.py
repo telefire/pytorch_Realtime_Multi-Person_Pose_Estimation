@@ -38,7 +38,7 @@ def train_cli(parser):
                        help='duplicate data')
     group.add_argument('--loader-workers', default=8, type=int,
                        help='number of workers for data loading')
-    group.add_argument('--batch-size', default=100, type=int,
+    group.add_argument('--batch-size', default=1, type=int,
                        help='batch size')
     group.add_argument('--lr', '--learning-rate', default=1., type=float,
                     metavar='LR', help='initial learning rate')
@@ -159,10 +159,12 @@ def get_loss(saved_for_loss, heat_temp, vec_temp):
         # Compute losses
 
         #print(pred1.size())
-        pred1 = F.resize(pred1, 46)
-        pred2 = F.resize(pred2, 46)
-        #print(pred1.size())
+        #pred1 = F.resize(pred1, 46)
+        #pred2 = F.resize(pred2, 46)
+        #print(pred2.size())
 
+        #vec_temp = F.resize(vec_temp, 12)
+        #heat_temp = F.resize(heat_temp, 12)
 
         loss1 = criterion(pred1, vec_temp)
         loss2 = criterion(pred2, heat_temp) 
@@ -211,6 +213,11 @@ def train(train_loader, model, optimizer, epoch):
         data_time.update(time.time() - end)
 
         img = img.cuda()
+
+        img = F.resize(img, 1472)
+
+        #print("image size")
+        #print(img.size())
         heatmap_target = heatmap_target.cuda()
         paf_target = paf_target.cuda()
         # compute output
